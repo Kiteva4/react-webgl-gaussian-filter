@@ -7,10 +7,12 @@ export default () => {
         return;
     }
 
-    const gl = initWebGL(canvas);      // инициализация контекста GL
+    var gl = initWebGL(canvas);      // инициализация контекста GL
 
     GLC.init(gl);
-    GLC.clear(1.0, 0.0, 0.0, 1.0,);
+    GLC.clear(1.0, 1.0, 1.0, 1.0,);
+
+    return gl;
 }
 
 function initWebGL(canvas) {

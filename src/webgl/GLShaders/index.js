@@ -1,100 +1,116 @@
-export default (gl, GLSLShader, shaderProgram) => {
-    var fragmentShader = getVertexShader(gl, GLSLShader.vertexShaderCode);
-    var vertexShader = getFragmentShader(gl, GLSLShader.fragmentShaderCode);
+export default (gl, vertexShaderCode, fragmentShaderCode, filterValue) => {
 
-    // создать шейдерную программу
-    shaderProgram = gl.createProgram();
-    gl.attachShader(shaderProgram, vertexShader);
-    gl.attachShader(shaderProgram, fragmentShader);
-    gl.linkProgram(shaderProgram);
+  var vertexShader = getVertexShader(gl, vertexShaderCode);
+  var fragmentShader = getFragmentShader(gl, fragmentShaderCode);
 
-    // Если создать шейдерную программу не удалось, вывести предупреждение
+  // создать шейдерную программу
+  var shaderProgram = gl.createProgram();
 
-    if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
-        alert("Unable to initialize the shader program.");
-    }
+  gl.attachShader(shaderProgram, vertexShader);
+  gl.attachShader(shaderProgram, fragmentShader);
+  gl.linkProgram(shaderProgram);
 
-    gl.useProgram(shaderProgram);
-}
+  // Если создать шейдерную программу не удалось, вывести предупреждение
+
+  if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+    alert("Unable to initialize the shader program.");
+  }
+  var locationOfFoo = gl.getUniformLocation(fragmentShader, "foo");
+
+  gl.useProgram(shaderProgram);
+  gl.uniform1f(locationOfFoo, filterValue);   
+
+  return shaderProgram;
+};
 
 function getFragmentShader(gl, shaderCode) {
-    getShaderFromCode(gl, shaderCode, gl.FRAGMENT_SHADER)
+  return getShaderFromCode(gl, shaderCode, gl.FRAGMENT_SHADER);
 }
 
 function getVertexShader(gl, shaderCode) {
-    getShaderFromCode(gl, shaderCode, gl.VERTEX_SHADER)
+  return getShaderFromCode(gl, shaderCode, gl.VERTEX_SHADER);
 }
 
 // Получение шейдера на основе кода, написанного на языке шейдеров
 function getShaderFromCode(gl, shaderCode, shaderType) {
+  var shader;
 
-    var shader;
+  //код шейдера невалидный
+  if (!shaderCode) {
+    return null;
+  }
 
-    //код шейдера невалидный
-    if (!shaderCode) {
-        return null;
-    }
+  // неизвестный тип шейдера
+  if (shaderType !== gl.VERTEX_SHADER && shaderType !== gl.FRAGMENT_SHADER) {
+    return null;
+  }
 
-    // неизвестный тип шейдера
-    if (shaderType != gl.VERTEX_SHADER && shaderType != gl.FRAGMENT_SHADER) {
-        return null;
-    }
+  shader = createShader(gl, shaderCode, shaderType);
 
-    shader = gl.createShader(shaderType);
-    gl.shaderSource(shader, shaderCode);
+  if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+    alert("Ошибка при компиляции шейдера: " + gl.getShaderInfoLog(shader));
+    return null;
+  }
 
-    // скомпилировать шейдерную программу
-    gl.compileShader(shader);
+  return shader;
+}
 
-    // Проверить успешное завершение компиляции
-    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-        alert("Ошибка при компиляции шейдера: " + gl.getShaderInfoLog(shader));
-        return null;
-    }
+function createShader(gl, sourceCode, type) {
+  // скомпилировать шейдерную программу of type gl.VERTEX_SHADER or gl.FRAGMENT_SHADER
+  var shader = gl.createShader(type);
+  gl.shaderSource(shader, sourceCode);
+  gl.compileShader(shader);
 
-    return shader;
+  // Проверить успешное завершение компиляции
+  if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+    var info = gl.getShaderInfoLog(shader);
+    throw "Could not compile WebGL program. \n\n" + info;
+  }
+  return shader;
 }
 
 // Получение шейдера из HTML
-function getShaderFromHTML(gl, id) {
-    var shaderScript, theSource, currentChild, shader;
+export function getShaderFromHTML(gl, id) {
+  var shaderScript, theSource, currentChild, shader;
 
-    shaderScript = document.getElementById(id);
+  shaderScript = document.getElementById(id);
 
-    if (!shaderScript) {
-        return null;
+  if (!shaderScript) {
+    return null;
+  }
+
+  theSource = "";
+  currentChild = shaderScript.firstChild;
+
+  while (currentChild) {
+    if (currentChild.nodeType === currentChild.TEXT_NODE) {
+      theSource += currentChild.textContent;
     }
 
-    theSource = "";
-    currentChild = shaderScript.firstChild;
+    currentChild = currentChild.nextSibling;
+  }
 
-    while (currentChild) {
-        if (currentChild.nodeType == currentChild.TEXT_NODE) {
-            theSource += currentChild.textContent;
-        }
+  if (shaderScript.type === "x-shader/x-fragment") {
+    shader = gl.createShader(gl.FRAGMENT_SHADER);
+  } else if (shaderScript.type === "x-shader/x-vertex") {
+    shader = gl.createShader(gl.VERTEX_SHADER);
+  } else {
+    // неизвестный тип шейдера
+    return null;
+  }
 
-        currentChild = currentChild.nextSibling;
-    }
+  gl.shaderSource(shader, theSource);
 
-    if (shaderScript.type == "x-shader/x-fragment") {
-        shader = gl.createShader(gl.FRAGMENT_SHADER);
-    } else if (shaderScript.type == "x-shader/x-vertex") {
-        shader = gl.createShader(gl.VERTEX_SHADER);
-    } else {
-        // неизвестный тип шейдера
-        return null;
-    }
+  // скомпилировать шейдерную программу
+  gl.compileShader(shader);
 
-    gl.shaderSource(shader, theSource);
+  // Проверить успешное завершение компиляции
+  if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+    alert(
+      "An error occurred compiling the shaders: " + gl.getShaderInfoLog(shader)
+    );
+    return null;
+  }
 
-    // скомпилировать шейдерную программу
-    gl.compileShader(shader);
-
-    // Проверить успешное завершение компиляции
-    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-        alert("An error occurred compiling the shaders: " + gl.getShaderInfoLog(shader));
-        return null;
-    }
-
-    return shader;
+  return shader;
 }

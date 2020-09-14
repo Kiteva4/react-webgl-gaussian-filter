@@ -1,18 +1,24 @@
-import * as React from 'react'
-import GLInit from './GLInit'
-import GLRender from './GLRender'
+import * as React from "react";
+import GLInit from "./GLInit";
+import GLRender from "./GLRender";
+
+var gl;
 
 export default class WebGL extends React.Component {
+  componentDidUpdate() {
+    GLRender(gl, this.props.filterValue);
+  }
 
-    componentDidMount() {
-        GLInit();
-    }
+  componentDidMount() {
+    gl = GLInit();
+  }
 
-    update = () => {
-        // GLRender();
-    }
-
-    render() {
-        return <canvas id="webgl" style={{ height: '100%', border: '1px solid black' }}> </canvas>
-    }
+  render() {
+    return (
+      <canvas
+        id="webgl"
+        style={{ height: "100%", border: "1px solid black" }}
+      ></canvas>
+    );
+  }
 }

@@ -1,17 +1,23 @@
-var vertCode =
-    'attribute vec3 coordinates;' +
+export var vertexShaderSource = `
+    attribute vec4 aVertexPosition;
+    attribute vec4 aVertexColor;
+  
+    uniform mat4 uMVMatrix;
+    uniform mat4 uPMatrix;
+    
+    varying lowp vec4 vColor;
+  
+    void main(void) {
+      gl_Position = uPMatrix * uMVMatrix * aVertexPosition;
+      vColor = aVertexColor;
+    }
+  `;
 
-    'void main(void) {' +
-    ' gl_Position = vec4(coordinates, 1.0);' +
-    '}';
+export var fragmentShaderSource = `
+  varying lowp vec4 vColor;
+  uniform float foo;
 
-var fragCode =
-    'void main(void) {' +
-    ' gl_FragColor = vec4(0, 0.8, 0, 1);' +
-    '}';
-
-export default () => {
-
-    getVertexShaderCode() = () => vertCode;
-    getFragmentShaderCode() = () => fragCode;
-}
+  void main(void) {
+    gl_FragColor = vColor*foo;
+  }
+  `;

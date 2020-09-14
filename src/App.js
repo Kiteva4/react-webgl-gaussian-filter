@@ -1,24 +1,26 @@
-import * as React from 'react';
-import { View } from 'react-native'
-import { styles } from './Styles'
+import * as React from "react";
+import { View } from "react-native";
+import { styles } from "./Styles";
 
-import ImageHolderView from './ImageHolderView'
-import UserInputView from './UserInputView'
+import ImageHolderView from "./ImageHolderView";
+import UserInputView from "./UserInputView";
 
 export default class App extends React.Component {
-
-  onUpdateHandler = (filterValue) => {
-    console.log('update!' + filterValue);
-    this.onRenderHandler(filterValue);
+  constructor(props) {
+    super(props);
+    this.state = {
+      filterValue: 0,
+    };
   }
-
-  onRenderHandler = (filterValue) => { console.log('render_1!' + filterValue); }
+  onUpdateHandler = (_filterValue) => {
+    this.setState({ filterValue: _filterValue });
+  };
 
   render() {
     return (
       <View style={styles.main_screen_container}>
         <UserInputView onUpdate={this.onUpdateHandler} />
-        <ImageHolderView /*onRender = {this.onRenderHandler} *//>
+        <ImageHolderView filterValue={this.state.filterValue} />
       </View>
     );
   }
