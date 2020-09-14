@@ -1,10 +1,15 @@
 import * as React from 'react'
 import GLInit from './GLInit'
+import GLRender from './GLRender'
 
 export default class WebGL extends React.Component {
 
-    componentDidMount(){
+    componentDidMount() {
         GLInit();
+    }
+
+    update = () => {
+        // GLRender();
     }
 
     render() {

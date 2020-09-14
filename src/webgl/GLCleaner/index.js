@@ -4,10 +4,11 @@ class GLCleaner {
     }
 
     clear = (r, g, b, a) => {
-        this.gl.clearColor(1.0, 0.0, 0.0, 1.0);                                 // установить в качестве цвета очистки буфера цвета черный, полная непрозрачность
-        this.gl.enable(this.gl.DEPTH_TEST);                                     // включает использование буфера глубины
-        this.gl.depthFunc(this.gl.LEQUAL);                                      // определяет работу буфера глубины: более ближние объекты перекрывают дальние
-        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);     // очистить буфер цвета и буфер глубины.
+        this.gl.clearColor(r, g, b, a);                                      // установить в качестве цвета очистки буфера цвета черный, полная непрозрачность
+        this.gl.clearDepth(1.0);                                             // Clear everything
+        this.gl.enable(this.gl.DEPTH_TEST);                                  // включает использование буфера глубины
+        this.gl.depthFunc(this.gl.LEQUAL);                                   // определяет работу буфера глубины: более ближние объекты перекрывают дальние
+        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);  // очистить буфер цвета и буфер глубины.
     }
 }
 

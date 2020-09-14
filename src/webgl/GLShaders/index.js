@@ -1,9 +1,8 @@
-export default (gl) => {
-    var fragmentShader = getShader(gl, "shader-fs");
-    var vertexShader = getShader(gl, "shader-vs");
+export default (gl, GLSLShader, shaderProgram) => {
+    var fragmentShader = getVertexShader(gl, GLSLShader.vertexShaderCode);
+    var vertexShader = getFragmentShader(gl, GLSLShader.fragmentShaderCode);
 
     // создать шейдерную программу
-
     shaderProgram = gl.createProgram();
     gl.attachShader(shaderProgram, vertexShader);
     gl.attachShader(shaderProgram, fragmentShader);
@@ -16,13 +15,48 @@ export default (gl) => {
     }
 
     gl.useProgram(shaderProgram);
+}
 
-    vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
-    gl.enableVertexAttribArray(vertexPositionAttribute);
+function getFragmentShader(gl, shaderCode) {
+    getShaderFromCode(gl, shaderCode, gl.FRAGMENT_SHADER)
+}
+
+function getVertexShader(gl, shaderCode) {
+    getShaderFromCode(gl, shaderCode, gl.VERTEX_SHADER)
+}
+
+// Получение шейдера на основе кода, написанного на языке шейдеров
+function getShaderFromCode(gl, shaderCode, shaderType) {
+
+    var shader;
+
+    //код шейдера невалидный
+    if (!shaderCode) {
+        return null;
+    }
+
+    // неизвестный тип шейдера
+    if (shaderType != gl.VERTEX_SHADER && shaderType != gl.FRAGMENT_SHADER) {
+        return null;
+    }
+
+    shader = gl.createShader(shaderType);
+    gl.shaderSource(shader, shaderCode);
+
+    // скомпилировать шейдерную программу
+    gl.compileShader(shader);
+
+    // Проверить успешное завершение компиляции
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+        alert("Ошибка при компиляции шейдера: " + gl.getShaderInfoLog(shader));
+        return null;
+    }
+
+    return shader;
 }
 
 // Получение шейдера из HTML
-function getShader(gl, id) {
+function getShaderFromHTML(gl, id) {
     var shaderScript, theSource, currentChild, shader;
 
     shaderScript = document.getElementById(id);

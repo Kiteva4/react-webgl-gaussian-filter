@@ -14,6 +14,7 @@ export default class UserInputView extends React.Component {
 
   onValueChangeHandler = (value) => {
     this.setState({ filterValue: value })
+    this.props.onUpdate(this.state.filterValue);
   }
 
   render() {
@@ -24,8 +25,8 @@ export default class UserInputView extends React.Component {
           onValueChange={this.onValueChangeHandler}
           minimumValue={0}
           maximumValue={1}
-          minimumTrackTintColor="#FFFFFF"
-          maximumTrackTintColor="#000000"
+          minimumTrackTintColor='steelblue'
+          maximumTrackTintColor='grey'
         />
       </View>
     );
