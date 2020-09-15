@@ -15,9 +15,8 @@ export var vertexShaderSource = `
 
 export var fragmentShaderSource = `
   varying lowp vec4 vColor;
-  uniform float foo;
 
   void main(void) {
-    gl_FragColor = vColor*foo;
+    gl_FragColor = vColor;
   }
   `;

@@ -15,10 +15,8 @@ export default (gl, vertexShaderCode, fragmentShaderCode, filterValue) => {
   if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
     alert("Unable to initialize the shader program.");
   }
-  var locationOfFoo = gl.getUniformLocation(fragmentShader, "foo");
 
   gl.useProgram(shaderProgram);
-  gl.uniform1f(locationOfFoo, filterValue);   
 
   return shaderProgram;
 };
