@@ -43,18 +43,14 @@ function getShaderFromCode(gl, shaderCode, shaderType) {
     return null;
   }
 
+  //Скомпилировать и получить шейдерную программу of type gl.VERTEX_SHADER or gl.FRAGMENT_SHADER
   shader = createShader(gl, shaderCode, shaderType);
-
-  if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-    alert("Ошибка при компиляции шейдера: " + gl.getShaderInfoLog(shader));
-    return null;
-  }
 
   return shader;
 }
 
 function createShader(gl, sourceCode, type) {
-  // скомпилировать шейдерную программу of type gl.VERTEX_SHADER or gl.FRAGMENT_SHADER
+
   var shader = gl.createShader(type);
   gl.shaderSource(shader, sourceCode);
   gl.compileShader(shader);
@@ -62,8 +58,9 @@ function createShader(gl, sourceCode, type) {
   // Проверить успешное завершение компиляции
   if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
     var info = gl.getShaderInfoLog(shader);
-    throw new Error(`Could not compile WebGL program. \n\n #${info}`);
+    throw new Error(`Не удалось скомпилировать WebGL программу. \n\n #${info}`);
   }
+
   return shader;
 }
 

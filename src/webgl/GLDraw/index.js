@@ -4,10 +4,11 @@ import { Matrix, $V } from "../utils/sylvester";
 
 var mvMatrix;
 
-export default (gl, programInfo, buffers) => {
-    //   GLC.init(gl);
-     GLC.clear(0.0, 0.0, 0.0, 1.0);
-     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+export default (gl, programInfo, buffers, texture) => {
+    // GLC.init(gl);
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+    GLC.clear(0.0, 0.0, 0.0, 1.0);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     var perspectiveMatrix = makePerspective(45, 640.0 / 480.0, 0.1, 100.0);
 
@@ -17,18 +18,25 @@ export default (gl, programInfo, buffers) => {
 
     mvTranslate([-0.0, 0.0, -6.0]);
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position)
-    gl.vertexAttribPointer(programInfo.attribLocations.vertexPosition, 2, gl.FLOAT, false, 0, 0 );
-    gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.color)
-    gl.vertexAttribPointer(programInfo.attribLocations.vertexColor, 4, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(programInfo.attribLocations.vertexColor);
-
+    // Tell WebGL which indices to use to index the vertices
+    // gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
+  
     gl.useProgram(programInfo.program);
 
     setMatrixUniforms(gl, perspectiveMatrix, programInfo);
+    
+    // Tell WebGL we want to affect texture unit 0
+    gl.activeTexture(gl.TEXTURE0);
+      // Bind the texture to texture unit 0
+    gl.bindTexture(gl.TEXTURE_2D, texture);
 
+    // gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
+    gl.uniform2f(programInfo.uniformLocations.resolution, gl.canvas.width, gl.canvas.height);
+  
+    // const vertexCount = 6;
+    // const type = gl.UNSIGNED_SHORT;
+    // const offset = 0;
+    gl.drawArrays(gl.TRIANGLES, 0, 6);    
     // gl.uniformMatrix4fv(
     //     programInfo.uniformLocations.projectionMatrix,
     //     false,
@@ -38,9 +46,11 @@ export default (gl, programInfo, buffers) => {
     //     false,
     //     modelViewMatrix);
     
-    const offset = 0;
-    const vertexCount = 4;
-    gl.drawArrays(gl.TRIANGLE_STRIP, offset, vertexCount);
+    // // Draw the rectangle.
+    // var primitiveType = gl.TRIANGLES;
+    // var offset = 0;
+    // var count = 6;
+    // gl.drawArrays(primitiveType, offset, count);
 };
 
 function loadIdentity() {

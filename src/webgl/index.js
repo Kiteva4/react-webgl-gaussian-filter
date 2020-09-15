@@ -15,10 +15,14 @@ export default class WebGL extends React.Component {
 
   render() {
     return (
-      <canvas
-        id="webgl"
-        style={{ height: "100%", border: "1px solid black" }}
-      ></canvas>
+      <canvas id="webgl" style={{
+        position: "absolute",
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        border: "1px solid black"
+      }}></canvas>
     );
   }
 }

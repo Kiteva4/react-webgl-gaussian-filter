@@ -11,7 +11,7 @@ export default () => {
 
     GLC.init(gl);
     GLC.clear(1.0, 1.0, 1.0, 1.0,);
-
+    
     return gl;
 }
 
