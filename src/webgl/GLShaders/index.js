@@ -62,7 +62,7 @@ function createShader(gl, sourceCode, type) {
   // Проверить успешное завершение компиляции
   if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
     var info = gl.getShaderInfoLog(shader);
-    throw "Could not compile WebGL program. \n\n" + info;
+    throw new Error(`Could not compile WebGL program. \n\n #${info}`);
   }
   return shader;
 }
