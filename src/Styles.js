@@ -3,7 +3,10 @@ import { StyleSheet } from 'react-native'
 export const styles = StyleSheet.create({
     main_screen_container: {
         flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: "stretch",
         flex: 1,
+        alignContent: 'center',
         position: "absolute", 
         top: 50, 
         bottom: 50, 

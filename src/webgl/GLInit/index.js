@@ -1,7 +1,7 @@
-import GLC from '../GLCleaner';
+// import GLC from '../old_GLCleaner';
 
 export default () => {
-    const canvas = document.getElementById("webgl");
+    const canvas = document.querySelector('#webgl');
 
     if (!canvas) {
         return;
@@ -9,8 +9,11 @@ export default () => {
 
     var gl = initWebGL(canvas);      // инициализация контекста GL
 
-    GLC.init(gl);
-    GLC.clear(1.0, 1.0, 1.0, 1.0,);
+    gl.clearColor(0.0, 0.0, 0.0, 1.0);                    // установить в качестве цвета очистки буфера цвета черный, полная непрозрачность
+    gl.clearDepth(1.0);                                   // Clear everything
+    gl.enable(gl.DEPTH_TEST);                             // включает использование буфера глубины
+    gl.depthFunc(gl.LEQUAL);                              // определяет работу буфера глубины: более ближние объекты перекрывают дальние
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);  // очистить буфер цвета и буфер глубины.
     
     return gl;
 }

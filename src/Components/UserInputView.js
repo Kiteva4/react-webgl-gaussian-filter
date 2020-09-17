@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Text, View } from 'react-native'
-import { styles } from './Styles';
+import { styles } from '../Styles';
 import Slider from '@react-native-community/slider';
 
 export default class UserInputView extends React.Component {

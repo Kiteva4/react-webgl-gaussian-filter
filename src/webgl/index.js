@@ -1,28 +1,72 @@
 import * as React from "react";
 import GLInit from "./GLInit";
-import GLRender from "./GLRender";
+import GLDrawImage from "./GLDrawImage";
+import GLShaders from "./GLShaders";
+import { fragmentShaderSource, vertexShaderSource } from "./GLSL/image_shader_2";
+import GLBuffers from "./GLBuffers";
+import GLTexture from "./GLTexture";
 
-var gl;
+// import webglUtils from "./utils/webgl-utils"
 
+var gl
+var shaderProgram
+var programInfo
+var buffers
+var src_info
+// var image
 export default class WebGL extends React.Component {
-  componentDidUpdate() {
-    GLRender(gl, this.props.filterValue);
+
+  /*Init*/
+  componentDidMount() {
+
+    gl = GLInit();
+
+    shaderProgram = GLShaders(gl, vertexShaderSource, fragmentShaderSource);
+
+    src_info = GLTexture(gl, 'logo512.png');
+
+    programInfo = {
+      program: shaderProgram,
+      attribLocations: {
+        vertexPosition: gl.getAttribLocation(shaderProgram, 'a_position'),
+        textureCoord: gl.getAttribLocation(shaderProgram, 'a_texCoord'),
+      },
+      uniformLocations: {
+        projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
+        modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
+        uSampler: gl.getUniformLocation(shaderProgram, 'uSampler'),
+        resolution: gl.getUniformLocation(shaderProgram, 'u_resolution'),
+      }
+    };
+
+    
+    buffers = GLBuffers(gl, {width: 512, height: 512});
   }
 
-  componentDidMount() {
-    gl = GLInit();
+  /* Draw*/
+  componentDidUpdate() {
+    
+    GLDrawImage(
+      gl,
+      buffers,
+      programInfo,
+      src_info,
+      this.props.filterValue,
+    );
   }
 
   render() {
     return (
-      <canvas id="webgl" style={{
-        position: "absolute",
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
-        border: "1px solid black"
-      }}></canvas>
+      <>
+        <canvas
+          id="webgl"
+          style={{
+            width: '100%',
+            height: '100%',
+            border: "1px solid black"
+          }}>
+        </canvas>
+      </>
     );
   }
 }
