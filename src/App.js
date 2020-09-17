@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import { styles } from "./Styles";
 
 import ImageHolderView from "./Components/ImageHolderView";
@@ -22,8 +22,12 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.main_screen_container}>
-        <UserInputView onUpdate={this.onUpdateHandler} />
-        <ImageHolderView filterValue={this.state.filterValue} />
+        <View style={styles.user_input_view}>
+          <UserInputView onUpdate={this.onUpdateHandler} />
+        </View>
+        <View style={styles.image_holder_view} >
+          <ImageHolderView filterValue={this.state.filterValue} />
+        </View>
       </View>
     );
   }

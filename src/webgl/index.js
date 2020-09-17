@@ -39,13 +39,13 @@ export default class WebGL extends React.Component {
       }
     };
 
-    
-    buffers = GLBuffers(gl, {width: 512, height: 512});
+
+    buffers = GLBuffers(gl, { width: 512, height: 512 });
   }
 
   /* Draw*/
   componentDidUpdate() {
-    
+
     GLDrawImage(
       gl,
       buffers,
@@ -57,16 +57,16 @@ export default class WebGL extends React.Component {
 
   render() {
     return (
-      <>
-        <canvas
-          id="webgl"
-          style={{
-            width: '100%',
-            height: '100%',
-            border: "1px solid black"
-          }}>
-        </canvas>
-      </>
+      <canvas id="webgl"
+        style={{
+          alignSelf: 'center',
+          height: '100%',
+          width: '100%',
+          border: "1px solid black",
+          overflow: 'hidden',
+        }}
+      >
+      </canvas>
     );
   }
 }

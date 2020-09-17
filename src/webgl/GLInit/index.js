@@ -20,10 +20,11 @@ export default () => {
 
 function initWebGL(canvas) {
     var gl = null;
+    var glContextAttributes = { preserveDrawingBuffer: true };
 
     try {
         // Попытаться получить стандартный контекст. Если не получится, попробовать получить экспериментальный.
-        gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+        gl = canvas.getContext("webgl", glContextAttributes) || canvas.getContext("experimental-webgl", glContextAttributes);
     }
     catch (e) { }
 
