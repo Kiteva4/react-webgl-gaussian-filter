@@ -9,7 +9,9 @@ export default class ImageHolderView extends React.Component {
     return (
       <View >
         <Text style={styles.text}>Результат</Text>
-        <WebGL filterValue={this.props.filterValue} />
+        <WebGL
+          image_url={this.props.image_url}
+          filterValue={this.props.filterValue} />
       </View>
     );
   }

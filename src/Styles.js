@@ -12,7 +12,6 @@ export const styles = StyleSheet.create({
         bottom: 10, 
         left: 20, 
         right: 20,
-        justifyContent: 'center',
     },
     user_input_view: {
         flex: 2,

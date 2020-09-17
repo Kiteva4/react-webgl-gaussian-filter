@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import GLInit from "./GLInit";
 import GLDrawImage from "./GLDrawImage";
 import GLShaders from "./GLShaders";
@@ -13,9 +13,15 @@ var shaderProgram
 var programInfo
 var buffers
 var src_info
-// var image
+
 export default class WebGL extends React.Component {
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      image_url: this.props.image_url,
+    }
+  }
   /*Init*/
   componentDidMount() {
 
@@ -23,7 +29,7 @@ export default class WebGL extends React.Component {
 
     shaderProgram = GLShaders(gl, vertexShaderSource, fragmentShaderSource);
 
-    src_info = GLTexture(gl, 'logo512.png');
+    src_info = GLTexture(gl, this.state.image_url);
 
     programInfo = {
       program: shaderProgram,
@@ -39,12 +45,15 @@ export default class WebGL extends React.Component {
       }
     };
 
-
     buffers = GLBuffers(gl, { width: 512, height: 512 });
   }
 
-  /* Draw*/
+   /* Draw*/
   componentDidUpdate() {
+
+    if (this.state.image_url !== this.props.image_url) {
+      this.setState({ image_url: this.props.image_url })
+    }
 
     GLDrawImage(
       gl,

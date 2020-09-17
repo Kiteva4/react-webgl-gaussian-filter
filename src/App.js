@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import { styles } from "./Styles";
 
 import ImageHolderView from "./Components/ImageHolderView";
@@ -10,23 +10,28 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       filterValue: 0,
+      image_url: 'logo512.png',
     };
-
-    window.addEventListener('resize', () => {this.setState({filterValue: this.state.filterValue}) });
   }
 
-  onUpdateHandler = (_filterValue) => {
-    this.setState({ filterValue: _filterValue });
-  };
- 
+  componentDidMount() { window.addEventListener('resize', () => { this.setState({}) }); }
+
+  onChangedImageUrl = (_image_url) => { this.setState({ image_url: _image_url }) }
+
+  onUpdateHandlerFilter = (_filterValue) => { this.setState({ filterValue: _filterValue }); };
+
   render() {
     return (
       <View style={styles.main_screen_container}>
         <View style={styles.user_input_view}>
-          <UserInputView onUpdate={this.onUpdateHandler} />
+          <UserInputView
+            onChangedImageUrl={this.onChangedImageUrl}
+            onUpdateSlider={this.onUpdateHandlerFilter} />
         </View>
         <View style={styles.image_holder_view} >
-          <ImageHolderView filterValue={this.state.filterValue} />
+          <ImageHolderView
+            image_url={this.state.image_url}
+            filterValue={this.state.filterValue} />
         </View>
       </View>
     );
