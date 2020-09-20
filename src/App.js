@@ -10,15 +10,13 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       filterValue: 0,
-      image_url: 'logo512.png',
+      image_url: 'https://img2.goodfon.ru/original/1920x1290/7/42/priroda-bozhya-korovka-makro.jpg',
     };
   }
 
-  componentDidMount() { window.addEventListener('resize', () => { this.setState({}) }); }
+  componentDidMount() { window.addEventListener('resize', this.emptyRefreshEvent) }
 
-  onChangedImageUrl = (_image_url) => { this.setState({ image_url: _image_url }) }
-
-  onUpdateHandlerFilter = (_filterValue) => { this.setState({ filterValue: _filterValue }); };
+  componentWillUnmount() { window.removeEventListener('resize', this.emptyRefreshEvent) }
 
   render() {
     return (
@@ -36,4 +34,11 @@ export default class App extends React.Component {
       </View>
     );
   }
+
+  emptyRefreshEvent = () => { this.setState({}) };
+
+  onChangedImageUrl = (_image_url) => { console.log(_image_url); this.setState({ image_url: _image_url }) }
+
+  onUpdateHandlerFilter = (_filterValue) => { this.setState({ filterValue: _filterValue }); };
+
 }

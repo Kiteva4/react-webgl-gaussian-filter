@@ -14,11 +14,11 @@ export const styles = StyleSheet.create({
         right: 20,
     },
     user_input_view: {
-        flex: 2,
+        flex: 1,
         flexDirection: 'column',
         borderWidth: 4,
         borderColor: 'grey',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         padding: 15,
         margin: 20,
     },
@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
         borderWidth: 4,
         borderColor: 'grey',
         justifyContent: 'center',
-        padding: 15,
+        padding: 5,
         margin: 20,
     },
     text: {

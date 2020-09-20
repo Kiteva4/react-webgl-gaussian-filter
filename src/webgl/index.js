@@ -1,4 +1,5 @@
 import React from "react";
+import { View } from 'react-native'
 import GLInit from "./GLInit";
 import GLDrawImage from "./GLDrawImage";
 import GLShaders from "./GLShaders";
@@ -19,17 +20,54 @@ export default class WebGL extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      image_url: this.props.image_url,
+      view_width: 0,
+      view_height: 0,
     }
   }
-  /*Init*/
-  componentDidMount() {
 
+  componentDidMount() {
+    window.addEventListener('resize', this.onUpdateDimensions, false);
+    window.addEventListener('load', this.onUpdateDimensions, false)
+
+    this.GLInits();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onUpdateDimensions, false);
+    window.removeEventListener('load', this.onUpdateDimensions, false);
+  }
+
+  componentDidUpdate() {
+    if (src_info.img.src !== this.props.image_url) {
+      this.GLInits();
+    }
+
+    this.Draw();
+  }
+
+  render() {
+    return (
+      <View style={{ flex: 1 }}>
+        <canvas id="webgl"
+          style={{
+            alignSelf: 'center',
+            height: '100%',
+            width: '100%',
+            border: "1px solid black",
+            overflow: 'hidden',
+          }}
+        >
+        </canvas>
+      </View>
+    );
+  }
+
+  GLInits() {
     gl = GLInit();
 
     shaderProgram = GLShaders(gl, vertexShaderSource, fragmentShaderSource);
 
-    src_info = GLTexture(gl, this.state.image_url);
+    src_info = GLTexture(gl, this.props.image_url, this.onImageLoadedHandler);
 
     programInfo = {
       program: shaderProgram,
@@ -44,38 +82,25 @@ export default class WebGL extends React.Component {
         resolution: gl.getUniformLocation(shaderProgram, 'u_resolution'),
       }
     };
-
-    buffers = GLBuffers(gl, { width: 512, height: 512 });
   }
 
-   /* Draw*/
-  componentDidUpdate() {
-
-    if (this.state.image_url !== this.props.image_url) {
-      this.setState({ image_url: this.props.image_url })
-    }
-
+  Draw() {
     GLDrawImage(
       gl,
       buffers,
       programInfo,
       src_info,
-      this.props.filterValue,
+      this.props.filterValue
     );
   }
 
-  render() {
-    return (
-      <canvas id="webgl"
-        style={{
-          alignSelf: 'center',
-          height: '100%',
-          width: '100%',
-          border: "1px solid black",
-          overflow: 'hidden',
-        }}
-      >
-      </canvas>
-    );
+  onUpdateDimensions = () => {
+    buffers = GLBuffers(gl, src_info.img.width, src_info.img.height);
+    this.setState({ view_width: gl.drawingBufferWidth, view_height: gl.drawingBufferHeight });
+  };
+
+  onImageLoadedHandler = (_width, _height) => {
+    buffers = GLBuffers(gl, _width, _height);
+    this.setState({ view_height: gl.drawingBufferHeight, view_width: gl.drawingBufferWidth })
   }
 }

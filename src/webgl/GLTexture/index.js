@@ -1,4 +1,4 @@
-export default (gl, url) => {
+export default (gl, url, imageLoadHandler) => {
 
     const texture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -45,7 +45,7 @@ export default (gl, url) => {
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
         }
 
-        console.log('image loaded')
+        imageLoadHandler(image.width, image.height);
     };
 
     return {

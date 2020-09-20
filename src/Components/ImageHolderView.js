@@ -4,7 +4,6 @@ import { styles } from "../Styles";
 import WebGL from "../webgl";
 
 export default class ImageHolderView extends React.Component {
-
   render() {
     return (
       <View style={{flex:1}} >
