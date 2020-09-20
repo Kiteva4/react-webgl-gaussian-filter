@@ -1,8 +1,11 @@
 import * as React from 'react';
-import { Text, View, TouchableOpacity } from 'react-native'
+import { Text, View } from 'react-native'
 import { styles } from '../Styles';
 import Slider from '@react-native-community/slider';
 import axios from 'axios';
+
+import LoadImageButton from './Buttons/LoadImageButton'
+import SaveImageButton from './Buttons/SaveImageButton'
 
 export default class UserInputView extends React.Component {
   constructor(props) {
@@ -13,7 +16,7 @@ export default class UserInputView extends React.Component {
     };
   }
 
-  onFileChange = (event) => { this.setState({ selectedFile: event.target.files[0] }); };
+  onFileChangeHandler = (event) => { this.setState({ selectedFile: event.target.files[0] }); };
 
   // On file upload (click the upload button) 
   onFileUpload = () => {
@@ -45,26 +48,8 @@ export default class UserInputView extends React.Component {
           maximumTrackTintColor="grey"
         />
         <Text style={styles.text}>{this.state.filterValue.toFixed(5)}</Text>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            document.getElementById("fileSelector").click()
-          }}
-        >
-          <input type="file" id="fileSelector" onChange={this.onFileChange} hidden={true} />
-          <Text>Загрузить изображение</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            var download = document.createElement('a');
-            download.href = document.getElementById("webgl").toDataURL('image/png', 1);
-            download.download = 'reddot.png';
-            download.click();
-          }}
-        >
-          <Text>Сохранить изображение</Text>
-        </TouchableOpacity>
+        <SaveImageButton />
+        <LoadImageButton onFileChange={this.onFileChangeHandler} />
       </View>
     );
   }

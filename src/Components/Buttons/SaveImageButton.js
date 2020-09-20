@@ -8,9 +8,9 @@ export default class SaveImageButton extends React.Component {
             <TouchableOpacity
                 style={styles.button}
                 onPress={() => {
-                    var download = document.createElement('saver');
-                    download.href = document.getElementById("webgl").toDataURL('image/png');
-                    download.download = 'result.png';
+                    var download = document.createElement('a');
+                    download.href = document.getElementById("webgl").toDataURL('image/png', 1);
+                    download.download = 'gaussian_image.png';
                     download.click();
                 }}
             >

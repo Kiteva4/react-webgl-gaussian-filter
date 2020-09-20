@@ -7,7 +7,7 @@ export default class ImageHolderView extends React.Component {
 
   render() {
     return (
-      <View >
+      <View style={{flex:1}} >
         <Text style={styles.text}>Результат</Text>
         <WebGL
           image_url={this.props.image_url}
