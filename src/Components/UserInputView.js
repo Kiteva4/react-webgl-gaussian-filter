@@ -10,7 +10,7 @@ export default class UserInputView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      filterValue: 0,
+      filterValue: 0.3,
     };
   }
 
@@ -34,13 +34,14 @@ export default class UserInputView extends React.Component {
             onValueChange={this.onSliderValueChangeHandler}
             minimumValue={0}
             maximumValue={1}
+            value={this.state.filterValue}
             minimumTrackTintColor="black"
             maximumTrackTintColor="grey"
           />
           <Text style={styles.text}>{this.state.filterValue.toFixed(5)}</Text>
         </View>
-        <SaveImageButton />
         <LoadImageButton onFileChange={this.onFileChangeHandler} />
+        <SaveImageButton />
       </View>
     );
   }

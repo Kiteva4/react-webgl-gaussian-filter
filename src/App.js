@@ -9,7 +9,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      filterValue: 0,
+      filterValue: 0.3,
       image_url: 'https://img2.goodfon.ru/original/1920x1290/7/42/priroda-bozhya-korovka-makro.jpg',
     };
   }

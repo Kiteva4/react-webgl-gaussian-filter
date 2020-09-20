@@ -12,6 +12,9 @@ export const styles = StyleSheet.create({
         bottom: 10, 
         left: 20, 
         right: 20,
+        minHeight: 550,
+        minWidth: 800,
+
     },
     user_input_view: {
         flex: 1,
@@ -35,7 +38,6 @@ export const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 28,
         paddingBottom: 15,
-
     },
     button: {
         alignItems: "center",

@@ -3,7 +3,7 @@ import { View } from 'react-native'
 import GLInit from "./GLInit";
 import GLDrawImage from "./GLDrawImage";
 import GLShaders from "./GLShaders";
-import { fragmentShaderSource, vertexShaderSource } from "./GLSL/image_shader_2";
+import { fragmentShaderSource, vertexShaderSource } from "./GLSL/gaussian_filter_shader";
 import GLBuffers from "./GLBuffers";
 import GLTexture from "./GLTexture";
 
@@ -53,7 +53,7 @@ export default class WebGL extends React.Component {
             alignSelf: 'center',
             height: '100%',
             width: '100%',
-            border: "1px solid black",
+            // border: "1px solid black",
             overflow: 'hidden',
           }}
         >
@@ -76,10 +76,9 @@ export default class WebGL extends React.Component {
         textureCoord: gl.getAttribLocation(shaderProgram, 'a_texCoord'),
       },
       uniformLocations: {
-        projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
-        modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
-        uSampler: gl.getUniformLocation(shaderProgram, 'uSampler'),
-        resolution: gl.getUniformLocation(shaderProgram, 'u_resolution'),
+        vResolution: gl.getUniformLocation(shaderProgram, 'u_resolution_vert'),
+        fResolution: gl.getUniformLocation(shaderProgram, 'u_resolution_frag'),
+        filterPower: gl.getUniformLocation(shaderProgram, 'u_filterPower'),
       }
     };
   }

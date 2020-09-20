@@ -30,7 +30,9 @@ export default (gl, buffers, programInfo, src_info, filterValue) => {
   gl.enableVertexAttribArray(programInfo.attribLocations.textureCoord);
   gl.vertexAttribPointer( programInfo.attribLocations.textureCoord, 2, gl.FLOAT, false, 0, 0);
   
-  gl.uniform2f(programInfo.uniformLocations.resolution, gl.canvas.width, gl.canvas.height);
+  gl.uniform2f(programInfo.uniformLocations.vResolution, gl.canvas.width, gl.canvas.height);
+  gl.uniform2f(programInfo.uniformLocations.fResolution, gl.canvas.width, gl.canvas.height);
+  gl.uniform1f(programInfo.uniformLocations.filterPower, filterValue);
   
   gl.drawArrays(gl.TRIANGLES, 0, 6);
 };
