@@ -13,8 +13,8 @@ export default class UserInputView extends React.Component {
     };
   }
 
-  onFileChange = (event) => { this.setState({selectedFile: event.target.files[0]}); };
-  
+  onFileChange = (event) => { this.setState({ selectedFile: event.target.files[0] }); };
+
   // On file upload (click the upload button) 
   onFileUpload = () => {
     const data = new FormData()
@@ -29,7 +29,7 @@ export default class UserInputView extends React.Component {
 
   onSliderValueChangeHandler = (value) => {
     this.setState({ filterValue: value });
-    this.props.onUpdate(this.state.filterValue);
+    this.props.onUpdateSlider(this.state.filterValue);
   };
 
   render() {
@@ -54,15 +54,12 @@ export default class UserInputView extends React.Component {
           <input type="file" id="fileSelector" onChange={this.onFileChange} hidden={true} />
           <Text>Загрузить изображение</Text>
         </TouchableOpacity>
-        {/* <TouchableOpacity style={styles.button} onPress={async () => { this.onFileUpload() }}>
-          <Text>Подтвердить</Text>
-        </TouchableOpacity> */}
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
-            var download = document.createElement('saver');
-            download.href = document.getElementById("webgl").toDataURL('image/png');
-            download.download = 'result.png';
+            var download = document.createElement('a');
+            download.href = document.getElementById("webgl").toDataURL('image/png', 1);
+            download.download = 'reddot.png';
             download.click();
           }}
         >
