@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
         bottom: 10, 
         left: 20, 
         right: 20,
-        minHeight: 550,
+        minHeight: 650,
         minWidth: 800,
 
     },
