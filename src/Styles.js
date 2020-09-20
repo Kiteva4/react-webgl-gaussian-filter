@@ -39,12 +39,17 @@ export const styles = StyleSheet.create({
         fontSize: 28,
         paddingBottom: 15,
     },
+    button_text: {
+        textAlign: 'center',
+        fontSize: 20,
+        fontWeight:'bolt',
+        paddingBottom: 15,
+    },
     button: {
         alignItems: "center",
         backgroundColor: "white",
-        padding: 10,
+        marginTop: 20,
         borderWidth: 2,
         borderColor: 'black',
-        margin: 10
     },
 })

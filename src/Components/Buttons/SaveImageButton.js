@@ -14,7 +14,7 @@ export default class SaveImageButton extends React.Component {
                     download.click();
                 }}
             >
-                <Text>Сохранить изображение</Text>
+                <Text style={styles.button_text} >Сохранить изображение</Text>
             </TouchableOpacity>
         )
     }

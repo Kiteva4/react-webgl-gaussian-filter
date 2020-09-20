@@ -14,7 +14,7 @@ export default class LoadImageButton extends React.Component {
                 }}
             >
                 <input type="file" id="fileSelector" onChange={this.props.onFileChange} hidden={true} />
-                <Text>Загрузить изображение</Text>
+                <Text style={styles.button_text}>Загрузить изображение</Text>
             </TouchableOpacity>
         )
     }
