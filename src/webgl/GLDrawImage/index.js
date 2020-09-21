@@ -14,7 +14,7 @@ export default (gl, buffers, programInfo, src_info, filterValue) => {
   resizeCanvasToDisplaySize(gl.canvas);
 
   // Tell WebGL how to convert from clip space to pixels
-  gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+  gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
 
   gl.clearColor(0, 0, 0, 0);
 
